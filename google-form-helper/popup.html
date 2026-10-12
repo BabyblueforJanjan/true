@@ -11,19 +11,14 @@
     }
     #run:disabled { opacity: 0.6; cursor: wait; }
     #status { margin-top: 10px; color: #5f6368; min-height: 1.5em; }
-    .key { display: flex; gap: 6px; margin-top: 8px; }
-    .key input { flex: 1; min-width: 0; padding: 6px 8px; border: 1px solid #ccc; border-radius: 6px; }
-    .key button { padding: 6px 10px; border: 1px solid #673ab7; background: #fff; color: #673ab7; border-radius: 6px; cursor: pointer; }
+    a { color: #673ab7; font-size: 12px; }
   </style>
 </head>
 <body>
   <h1>🤖 Claude ช่วยติว</h1>
   <button id="run">ให้ Claude ช่วยทำฟอร์มนี้</button>
   <div id="status"></div>
-  <div class="key">
-    <input id="key" type="password" placeholder="API key (sk-ant-...)" />
-    <button id="save">บันทึก</button>
-  </div>
+  <a href="#" id="options">ตั้งค่า API key</a>
   <script src="popup.js"></script>
 </body>
 </html>
