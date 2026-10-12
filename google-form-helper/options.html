@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <title>ตั้งค่า Claude ช่วยติว</title>
+  <style>
+    body { max-width: 480px; margin: 32px auto; padding: 0 16px; font: 14px/1.6 system-ui, sans-serif; }
+    input { width: 100%; padding: 8px; box-sizing: border-box; margin: 8px 0; }
+    button { padding: 8px 16px; background: #673ab7; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+    #msg { margin-left: 8px; color: #1e8e3e; }
+  </style>
+</head>
+<body>
+  <h1>🤖 ตั้งค่า Claude ช่วยติว</h1>
+  <label for="key">Anthropic API key</label>
+  <input id="key" type="password" placeholder="sk-ant-..." />
+  <button id="save">บันทึก</button><span id="msg"></span>
+  <p>สร้าง API key ได้ที่ <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a><br />
+  key จะถูกเก็บไว้ในเบราว์เซอร์ของคุณเท่านั้น และส่งไปที่ api.anthropic.com เท่านั้น</p>
+  <script src="options.js"></script>
+</body>
+</html>

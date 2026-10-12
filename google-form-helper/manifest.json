@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Claude ช่วยติว Google Form",
+  "version": "1.4.0",
+  "description": "กดปุ่มเดียว ให้ Claude ช่วยตอบและอธิบายแบบฝึกหัด/quiz ฝึกซ้อมใน Google Form",
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": ["https://api.anthropic.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Claude ช่วยติว"
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": ["https://docs.google.com/forms/*"],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ]
+}
