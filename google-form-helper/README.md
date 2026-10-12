@@ -19,6 +19,9 @@ Chrome extension สำหรับ **แบบฝึกหัด / quiz ฝึ�
    - **กรอกคำตอบทั้งหมดลงฟอร์ม**: กรอกทุกข้อ
 4. ตรวจทานก่อนกดส่งเอง (extension ไม่กดส่งให้)
 
+## ค่าใช้จ่าย
+ใช้โมเดล **Claude Haiku 5.5** ซึ่งเร็วและถูกมาก แบบฝึกหัด 20 ข้อตกครั้งละไม่ถึง 10 สตางค์ (ต้องเติมเครดิต API ที่ console.anthropic.com ก่อน)
+
 ## รองรับ
 | ชนิดคำถาม | แสดงคำตอบ | กรอกอัตโนมัติ |
 |---|---|---|
@@ -37,6 +40,6 @@ google-form-helper/
 ├── manifest.json   # ตั้งค่า extension (Manifest V3)
 ├── popup.html/js   # ปุ่มหลัก
 ├── content.js/css  # อ่านคำถาม แสดงคำตอบ กรอกฟอร์ม
-├── background.js   # เรียก Claude API (claude-opus-5-5)
+├── background.js   # เรียก Claude API (claude-haiku-5-5)
 └── options.html/js # ตั้งค่า API key
 ```

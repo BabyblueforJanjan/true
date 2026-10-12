@@ -2,7 +2,7 @@
 // เรียก Messages API ด้วย fetch ตรงๆ เพราะ extension นี้ไม่มีขั้นตอน build/bundle
 
 const API_URL = "https://api.anthropic.com/v1/messages";
-const MODEL = "claude-opus-5-5";
+const MODEL = "claude-haiku-5-5";
 
 const SYSTEM_PROMPT = `คุณคือติวเตอร์ที่ช่วยนักเรียนทำแบบฝึกหัดและ quiz ฝึกซ้อม
 สำหรับแต่ละข้อ ให้ตอบคำตอบที่ถูกต้องที่สุด และอธิบายเหตุผลสั้นๆ เป็นภาษาไทยให้เข้าใจแนวคิด
@@ -56,13 +56,11 @@ async function askClaude(questions, formTitle) {
       "content-type": "application/json",
       "x-api-key": apiKey,
       "anthropic-version": "2023-06-01",
-      "anthropic-beta": "server-side-fallback-2026-07-01",
       "anthropic-dangerous-direct-browser-access": "true"
     },
     body: JSON.stringify({
       model: MODEL,
       max_tokens: 16000,
-      fallbacks: "default",
       output_config: {
         effort: "medium",
         format: { type: "json_schema", schema: ANSWER_SCHEMA }
