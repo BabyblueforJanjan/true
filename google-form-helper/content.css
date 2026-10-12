@@ -1,0 +1,61 @@
+#cfh-panel {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 380px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 32px);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  color: #202124;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  font: 14px/1.5 "Sarabun", system-ui, sans-serif;
+  z-index: 2147483647;
+  overflow: hidden;
+}
+#cfh-panel .cfh-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #673ab7;
+  color: #fff;
+}
+#cfh-panel .cfh-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+#cfh-panel .cfh-body {
+  padding: 12px 16px;
+  overflow-y: auto;
+}
+#cfh-panel .cfh-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-top: 10px;
+}
+#cfh-panel .cfh-q { font-weight: 600; }
+#cfh-panel .cfh-ans { color: #1e8e3e; font-weight: 600; margin-top: 4px; }
+#cfh-panel .cfh-exp { color: #5f6368; margin-top: 4px; white-space: pre-wrap; }
+#cfh-panel .cfh-row { display: flex; gap: 8px; margin-top: 8px; }
+#cfh-panel .cfh-btn {
+  border: 1px solid #673ab7;
+  background: #fff;
+  color: #673ab7;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font: inherit;
+}
+#cfh-panel .cfh-primary {
+  width: 100%;
+  background: #673ab7;
+  color: #fff;
+  padding: 8px;
+}
