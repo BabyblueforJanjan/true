@@ -121,12 +121,20 @@
     const body = el("div", "cfh-body");
     const byIndex = Object.fromEntries(answers.map((a) => [a.index, a]));
 
-    const fillAll = el("button", "cfh-btn cfh-primary", "✍️ กรอกคำตอบทั้งหมดลงฟอร์ม");
+    const fillAll = el("button", "cfh-btn cfh-primary", "กรอก");
     fillAll.onclick = () => {
       const n = answers.filter(fillAnswer).length;
       fillAll.textContent = `✅ กรอกแล้ว ${n} ข้อ (ตรวจทานก่อนส่งนะ)`;
     };
-    body.append(fillAll);
+
+    const details = el("div", "cfh-details");
+    details.hidden = true;
+    const toggle = el("button", "cfh-toggle", "ดูคำอธิบาย ▾");
+    toggle.onclick = () => {
+      details.hidden = !details.hidden;
+      toggle.textContent = details.hidden ? "ดูคำอธิบาย ▾" : "ซ่อนคำอธิบาย ▴";
+    };
+    body.append(fillAll, toggle, details);
 
     questions.forEach((q) => {
       const a = byIndex[q.index];
@@ -150,7 +158,7 @@
         btns.append(fill, go);
         card.append(btns);
       }
-      body.append(card);
+      details.append(card);
     });
 
     renderPanel(`🤖 Claude ตอบ ${answers.length} ข้อ`, body);

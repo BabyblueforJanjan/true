@@ -53,6 +53,15 @@
   cursor: pointer;
   font: inherit;
 }
+#cfh-panel .cfh-toggle {
+  display: block;
+  margin: 8px auto 0;
+  background: none;
+  border: none;
+  color: #673ab7;
+  cursor: pointer;
+  font: inherit;
+}
 #cfh-panel .cfh-primary {
   width: 100%;
   background: #673ab7;
