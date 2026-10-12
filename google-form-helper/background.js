@@ -47,7 +47,7 @@ function formatQuestions(questions) {
 async function askClaude(questions, formTitle) {
   const { apiKey } = await chrome.storage.sync.get("apiKey");
   if (!apiKey) {
-    throw new Error("ยังไม่ได้ใส่ API key — คลิกขวาที่ไอคอน extension > ตัวเลือก (Options)");
+    throw new Error("ยังไม่ได้ใส่ API key — คลิกไอคอน extension แล้วใส่ key ในช่องด้านล่าง");
   }
 
   const res = await fetch(API_URL, {

@@ -1,9 +1,15 @@
 const runBtn = document.getElementById("run");
 const status = document.getElementById("status");
 
-document.getElementById("options").onclick = (e) => {
-  e.preventDefault();
-  chrome.runtime.openOptionsPage();
+const keyInput = document.getElementById("key");
+
+chrome.storage.sync.get("apiKey").then(({ apiKey }) => {
+  if (apiKey) keyInput.value = apiKey;
+});
+
+document.getElementById("save").onclick = async () => {
+  await chrome.storage.sync.set({ apiKey: keyInput.value.trim() });
+  status.textContent = "✅ บันทึก API key แล้ว";
 };
 
 runBtn.onclick = async () => {

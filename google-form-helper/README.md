@@ -9,7 +9,7 @@ Chrome extension สำหรับ **แบบฝึกหัด / quiz ฝึ�
 1. เปิด Chrome ไปที่ `chrome://extensions`
 2. เปิด **Developer mode** (มุมขวาบน)
 3. กด **Load unpacked** → เลือกโฟลเดอร์ `google-form-helper`
-4. คลิกขวาที่ไอคอน extension → **Options** → ใส่ Anthropic API key (สร้างที่ [console.anthropic.com](https://console.anthropic.com/settings/keys))
+4. คลิกไอคอน extension → ใส่ Anthropic API key ในช่องด้านล่าง → กด **บันทึก** (สร้างที่ [console.anthropic.com](https://console.anthropic.com/settings/keys))
 
 ## วิธีใช้
 1. เปิด Google Form แบบฝึกหัด
