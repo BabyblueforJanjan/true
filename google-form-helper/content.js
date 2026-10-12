@@ -53,40 +53,73 @@
     return questions;
   }
 
-  function setNativeValue(input, value) {
-    const proto = input.tagName === "TEXTAREA" ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
-    Object.getOwnPropertyDescriptor(proto, "value").set.call(input, value);
-    input.dispatchEvent(new Event("input", { bubbles: true }));
+  // พิมพ์ข้อความแบบเดียวกับผู้ใช้พิมพ์ เพื่อให้ Google Form รับรู้ค่า
+  function typeText(input, value) {
+    input.focus();
+    input.select();
+    const typed = document.execCommand("insertText", false, value);
+    if (!typed || input.value !== value) {
+      const proto = input.tagName === "TEXTAREA" ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
+      Object.getOwnPropertyDescriptor(proto, "value").set.call(input, value);
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+    }
     input.dispatchEvent(new Event("change", { bubbles: true }));
+    input.blur();
+    return input.value === value;
+  }
+
+  // คลิกแบบครบทุก event (Google Form ฟัง mousedown/mouseup ด้วย ไม่ใช่แค่ click)
+  function realClick(target) {
+    const r = target.getBoundingClientRect();
+    const opts = { bubbles: true, cancelable: true, view: window, clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 };
+    target.dispatchEvent(new PointerEvent("pointerdown", opts));
+    target.dispatchEvent(new MouseEvent("mousedown", opts));
+    target.dispatchEvent(new PointerEvent("pointerup", opts));
+    target.dispatchEvent(new MouseEvent("mouseup", opts));
+    target.dispatchEvent(new MouseEvent("click", opts));
+  }
+
+  const isChecked = (el) => el.getAttribute("aria-checked") === "true";
+
+  function setChecked(el, want) {
+    if (isChecked(el) === want) return true;
+    realClick(el);
+    if (isChecked(el) !== want) el.click(); // สำรอง ถ้าคลิกแบบแรกไม่ติด
+    return isChecked(el) === want;
+  }
+
+  // เทียบข้อความตัวเลือกแบบยืดหยุ่น (ไม่สนตัวพิมพ์ เว้นวรรค และคำนำหน้าแบบ "A." "ก)")
+  function norm(s) {
+    return clean(s).toLowerCase().replace(/^([a-z]|[ก-ฮ]|\d+)\s*[.)]\s+/, "");
+  }
+
+  function matchOption(els, choice) {
+    const c = norm(choice);
+    if (!c) return null;
+    return els.find((el) => norm(optionLabel(el)) === c) ||
+      els.find((el) => {
+        const o = norm(optionLabel(el));
+        return o && (o.includes(c) || c.includes(o));
+      }) || null;
   }
 
   function fillAnswer(ans) {
     const item = questionEls[ans.index];
     if (!item || ans.skip) return false;
-    const wanted = ans.choices.map(clean);
 
     const radios = [...item.querySelectorAll('[role="radio"]')];
     if (radios.length) {
-      const r = radios.find((el) => wanted.includes(optionLabel(el)));
-      if (r && r.getAttribute("aria-checked") !== "true") r.click();
-      return !!r;
+      const r = matchOption(radios, ans.choices[0]);
+      return !!r && setChecked(r, true);
     }
     const checks = [...item.querySelectorAll('[role="checkbox"]')];
     if (checks.length) {
-      let any = false;
-      checks.forEach((el) => {
-        const should = wanted.includes(optionLabel(el));
-        const is = el.getAttribute("aria-checked") === "true";
-        if (should !== is) el.click();
-        any = any || should;
-      });
-      return any;
+      const targets = ans.choices.map((c) => matchOption(checks, c)).filter(Boolean);
+      if (!targets.length) return false;
+      return checks.map((el) => setChecked(el, targets.includes(el))).every(Boolean);
     }
     const input = item.querySelector('input[type="text"], input:not([type]), textarea');
-    if (input && ans.text) {
-      setNativeValue(input, ans.text);
-      return true;
-    }
+    if (input && ans.text) return typeText(input, ans.text);
     return false; // dropdown: ให้ผู้ใช้เลือกเองตามคำตอบที่แสดง
   }
 
@@ -122,9 +155,12 @@
     const byIndex = Object.fromEntries(answers.map((a) => [a.index, a]));
 
     const fillAll = el("button", "cfh-btn cfh-primary", "กรอก");
+    const fillMsg = el("div", "cfh-exp");
     fillAll.onclick = () => {
-      const n = answers.filter(fillAnswer).length;
-      fillAll.textContent = `✅ กรอกแล้ว ${n} ข้อ (ตรวจทานก่อนส่งนะ)`;
+      const todo = answers.filter((a) => !a.skip);
+      const failed = todo.filter((a) => !fillAnswer(a)).map((a) => a.index);
+      fillAll.textContent = `✅ กรอกแล้ว ${todo.length - failed.length}/${todo.length} ข้อ (ตรวจทานก่อนส่งนะ)`;
+      fillMsg.textContent = failed.length ? `⚠️ กรอกไม่ได้: ข้อ ${failed.join(", ")} — ดูคำตอบใน "ดูคำอธิบาย" แล้วเลือกเอง` : "";
     };
 
     const details = el("div", "cfh-details");
@@ -134,7 +170,7 @@
       details.hidden = !details.hidden;
       toggle.textContent = details.hidden ? "ดูคำอธิบาย ▾" : "ซ่อนคำอธิบาย ▴";
     };
-    body.append(fillAll, toggle, details);
+    body.append(fillAll, fillMsg, toggle, details);
 
     questions.forEach((q) => {
       const a = byIndex[q.index];
